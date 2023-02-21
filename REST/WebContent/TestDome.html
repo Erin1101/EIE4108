@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Test DOME</title>
+</head>
+<body>
+
+<script type="text/javascript">
+	function createRequest() {
+		var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		return xmlhttp;
+	}
+
+	function addCD() {
+		var req = createRequest();
+		var title = document.getElementById("Title");
+		var artist = document.getElementById("Artist");
+		var status = document.getElementById("Status");
+        var url = "http://localhost:8080/REST/Dome/dome/" + title.value + "," + artist.value;
+        alert(url);
+		req.onreadystatechange=function() { 
+			if (req.readyState==4 && req.status==200) {
+				status.value = "CD " + title.value + "," + artist.value + " added";
+			}
+		}    
+        req.open("POST",url, true);
+		req.send();
+	}
+	
+	function getCD() {
+		var req = createRequest();
+		var title = document.getElementById("Title");
+		var status = document.getElementById("Status");
+        var url = "http://localhost:8080/REST/Dome/dome?title=" + title.value;
+        alert(url);
+		req.onreadystatechange=function() { 
+			if (req.readyState==4 && req.status==200) {
+				status.value = req.responseText;
+			}
+		}    
+        req.open("GET",url, true);
+		req.send();
+	}
+
+</script>
+</body>
+
+<body>
+<input type="text" id="Title" size="20" value="">
+<input type="text" id="Artist" size="20" value="">
+<input type="text" id="Status" size="30" value=""><br/>
+<button type="button" onclick="addCD()">Add CD</button>
+<button type="button" onclick="getCD()">Get CD</button>
+
+</body>
+</html>
